@@ -1,0 +1,50 @@
+# PHP BPJS Bridging
+
+Implementasi sederhana untuk bridging BPJS dengan PHP
+
+## Instalasi
+
+Instalasi dilakukan menggunakan [Composer](https://getcomposer.org/). Pastikan Composer telah terpasang di environment Anda sebelum melanjutkan.
+
+```bash
+composer require susutawar/php-bpjs-bridging
+```
+
+## Penggunaan
+
+```php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use BpjsBridging\Antrean\Bridging;
+use BpjsBridging\Config;
+
+$konfigurasi = new Config();
+$bridging = new Bridging($konfigurasi);
+```
+
+Jika tidak di isi, Konfigurasi akan otomatis membaca environment variable yang telah diset pada environment Anda.
+
+```dotenv
+BPJS_URL=
+BPJS_CONSUMER_ID=
+BPJS_CONSUMER_SECRET=
+BPJS_USER_KEY=
+```
+
+### Hasil Request
+
+Hasil request dapat langsung diakses dari property body
+
+```php
+$reqPoli = $bridging->referensiPoli();
+
+foreach ($reqPoli->body->list as $poli) {
+    echo $poli->kdpoli . ' - ' . $poli->nmpoli;
+}
+```
+
+## Kontribusi
+
+Your contribution is very welcome!
