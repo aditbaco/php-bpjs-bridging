@@ -97,7 +97,7 @@ class Bridging extends Bridge {
      * Tambah Antrean Farmasi
      *
      * @param string $kodebooking kode booking
-     * @param int $jenisresep jenis resep (racikan/non racikan) @see \BpjsBridging\Antrean\Constants
+     * @param int $jenisresep jenis resep (racikan/non racikan)
      * @param string $nomorantrean nomor antrean
      * @param string $keterangan keterangan
      * @return void
