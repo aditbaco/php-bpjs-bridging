@@ -195,7 +195,7 @@ class Bridging extends Bridge {
      */
     public function dashboardPerBulan($tahun, $bulan, $waktu)
     {
-        return $this->get("/dashboard/waktutunggu/bulan/$bulan/tahun/$bulan/waktu/$waktu");
+        return $this->get("/dashboard/waktutunggu/bulan/$bulan/tahun/$tahun/waktu/$waktu");
     }
 
     /**
