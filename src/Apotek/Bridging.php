@@ -219,7 +219,7 @@ class Bridging extends Bridge
      *
      * @param string $noSep
      */
-    public function sep(string $noSep) {
+    public function cariSep(string $noSep) {
         return $this->get("/sep/$noSep");
     }
 
@@ -228,10 +228,10 @@ class Bridging extends Bridge
      *
      * @param integer $bulan
      * @param integer $tahun
-     * @param integer (0. Semua 1. Obat PRB 2. Obat Kronis Blm Stabil 3. Obat Kemoterapi)
-     * @param integer (1. Belum diverifikasi 2. Sudah Verifikasi)
+     * @param integer $jenisObat (0. Semua 1. Obat PRB 2. Obat Kronis Blm Stabil 3. Obat Kemoterapi)
+     * @param boolean $status terverifikasi
      */
-    public function dataKlaim(int $bulan, int $tahun, int $jenisObat, int $status) {
-        return $this->get("/monitoring/klaim/$bulan/$tahun/$jenisObat/$status");
+    public function dataKlaim(int $bulan, int $tahun, int $jenisObat, bool $status) {
+        return $this->get("/monitoring/klaim/$bulan/$tahun/$jenisObat/" . ($status ? "2" : "1"));
     }
 }

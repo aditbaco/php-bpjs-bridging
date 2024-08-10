@@ -65,6 +65,9 @@ class Bridging extends Bridge {
      */
     public function referensiPasienFingerPrint($jenisIdentitas, $noidentitas)
     {
+        if (!in_array($jenisIdentitas, ['NIK', 'NOKA'])) {
+            throw new \Exception('Jenis identitas harus NIK atau NOKA');
+        }
         $jenisIdentitas = strtolower($jenisIdentitas);
         return $this->get("/ref/pasien/fp/identitas/$jenisIdentitas/noidentitas/$noidentitas");
     }
@@ -90,7 +93,7 @@ class Bridging extends Bridge {
      */
     public function tambahAntrean(AntreanRequest $antrean)
     {
-        return $this->post('/antrean/tambah', $antrean->toData());
+        return $this->post('/antrean/add', $antrean->toData());
     }
 
     /**
@@ -107,7 +110,7 @@ class Bridging extends Bridge {
         if (!in_array($jenisresep, ['racikan', 'non racikan'])) {
             throw new \Exception('Jenis resep harus racikan atau nonracikan');
         }
-        return $this->post('/antrean/tambahfarmasi', [
+        return $this->post('/antrean/farmasi/add', [
             'kodebooking' => $kodebooking,
             'jenisresep' => $jenisresep,
             'nomorantrean' => $nomorantrean,
@@ -177,7 +180,7 @@ class Bridging extends Bridge {
      * Dashboard waktu per tanggal
      *
      * @param mixed $tanggal
-     * @param mixed $waktu
+     * @param mixed $waktu (rs/server)
      */
     public function dashboardPerTanggal($tanggal, $waktu)
     {
@@ -191,7 +194,7 @@ class Bridging extends Bridge {
      *
      * @param string $tahun tahun
      * @param string $bulan bulan
-     * @param string $waktu waktu
+     * @param string $waktu waktu (rs/server)
      */
     public function dashboardPerBulan($tahun, $bulan, $waktu)
     {

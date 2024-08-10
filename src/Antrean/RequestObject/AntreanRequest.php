@@ -206,7 +206,7 @@ class AntreanRequest implements RequestObject
             "namapoli" => $this->namapoli,
             "pasienbaru" => $this->pasienbaru,
             "norm" => $this->norm,
-            "tanggalperiksa" => $this->tanggalperiksa,
+            "tanggalperiksa" => $tglPeriksa,
             "kodedokter" => $this->kodedokter,
             "namadokter" => $this->namadokter,
             "jampraktek" => $this->jampraktek,
