@@ -45,6 +45,16 @@ class Bridge
         return $this->parseResult($requestTime, $response);
     }
 
+    public function put($url, $data)
+    {
+        $requestTime = Carbon::now()->setTimezone('UTC')->unix();
+        $response = $this->client->request('PUT', $this->url() . $url, [
+            'headers' => $this->headerData($requestTime),
+            'json' => $data
+        ]);
+        return $this->parseResult($requestTime, $response);
+    }
+
     public function delete($url, $data)
     {
         $requestTime = Carbon::now()->setTimezone('UTC')->unix();
