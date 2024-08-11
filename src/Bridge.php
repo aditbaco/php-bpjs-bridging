@@ -111,12 +111,16 @@ class Bridge
     protected function headerData($requestTime)
     {
         $signature = base64_encode(hash_hmac('sha256', $this->config->getConsumerId() . "&" . $requestTime, $this->config->getConsumerSecret(), true));
-        return [
+        $data = [
             'x-cons-id' => $this->config->getConsumerId(),
             'user_key' => $this->config->getUserKey(),
             'x-timestamp' => $requestTime,
             'x-signature' => $signature,
         ];
+        if ($this->config->isPCare()) {
+            $data['x-authorization'] = $this->config->pCareAuth();
+        }
+        return $data;
     }
 
     protected function decryptResult($requestTime, $r)

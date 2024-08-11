@@ -7,6 +7,10 @@ class Config {
     private $consumer_id;
     private $consumer_secret;
     private $user_key;
+    private $kd_aplikasi;
+    private $username;
+    private $password;
+    private $pcare = false;
 
     public function __construct($url = null, $consumer_id = null, $consumer_secret = null, $user_key = null)
     {
@@ -57,6 +61,24 @@ class Config {
     public function setConsumerSecret($consumer_secret)
     {
         $this->consumer_secret = $consumer_secret;
+        return $this;
+    }
+
+    public function isPCare()
+    {
+        return $this->pcare;
+    }
+
+    public function pCareAuth()
+    {
+        return base64_encode($this->username . ':' . $this->password . ':' . $this->kd_aplikasi);
+    }
+
+    public function setPCare($username, $password, $kd_aplikasi) {
+        $this->pcare = true;
+        $this->username = $username;
+        $this->password = $password;
+        $this->kd_aplikasi = $kd_aplikasi;
         return $this;
     }
 }
