@@ -17,11 +17,11 @@ composer require susutawar/php-bpjs-bridging
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use BpjsBridging\Antrean\Bridging;
+use BpjsBridging\Antrean\Bridging as AntreanRs;
 use BpjsBridging\Config;
 
 $konfigurasi = new Config();
-$bridging = new Bridging($konfigurasi);
+$bridging = new AntreanRs($konfigurasi);
 ```
 
 Jika tidak di isi, Konfigurasi akan otomatis membaca environment variable yang telah diset pada environment Anda.
@@ -32,6 +32,21 @@ BPJS_CONSUMER_ID=
 BPJS_CONSUMER_SECRET=
 BPJS_USER_KEY=
 ```
+
+### PCare
+
+untuk penggunaan pada PCare lakukan perubahan seperti dibawah sebelum membuat briding
+
+```php
+use BpjsBridging\PCare\Bridging as PCare;
+use BpjsBridging\Config;
+
+$konfigurasi = new Config();
+$konfigurasi->setPCare('username', 'password', 'kodeAplikasi');
+$bridging = new PCare($konfigurasi);
+```
+
+> pastikan untuk **menyimpan semua kredensial anda dengan aman dalam sistem**
 
 ### Hasil Request
 
