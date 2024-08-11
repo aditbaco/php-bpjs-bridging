@@ -7,15 +7,17 @@ use Carbon\Carbon;
 
 class Bridging extends Bridge
 {
-    public function validate(string $noKartu, string $kdDokter = null)
+    public function validate(bool $pcare, string $noKartu, string $kdDokter = null)
     {
         $body = [
             'param' => $noKartu,
         ];
+        $module = 'pcare';
 
-        if ($kdDokter) {
+        if (!$pcare) {
             $body['kodedokter'] = $kdDokter;
+            $module = 'rs';
         }
-        return $this->post('/api/rs/validate', $body);
+        return $this->post("/api/$module/validate", $body);
     }
 }
