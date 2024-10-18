@@ -461,7 +461,7 @@ class Bridging extends Bridge
     // Status Pulang
 
     public function statusPulang(bool $rawatInap = false) {
-        return $this->get("/statuspulang/rawatInap" . ($rawatInap ? "true" : "false"));
+        return $this->get("/statuspulang/rawatInap/" . ($rawatInap ? "true" : "false"));
     }
 
     //==============================================

@@ -35,34 +35,28 @@ class Bridge
         return $this->parseResult($requestTime, $response);
     }
 
-    public function post($url, $data)
-    {
+    private function dataRequest($type, $url, $data) {
         $requestTime = Carbon::now()->setTimezone('UTC')->unix();
-        $response = $this->client->request('POST', $this->url() . $url, [
+        $response = $this->client->request($type, $this->url() . $url, [
             'headers' => $this->headerData($requestTime),
             'json' => $data
         ]);
         return $this->parseResult($requestTime, $response);
+    }
+
+    public function post($url, $data)
+    {
+        return $this->dataRequest('POST', $url, $data);
     }
 
     public function put($url, $data)
     {
-        $requestTime = Carbon::now()->setTimezone('UTC')->unix();
-        $response = $this->client->request('PUT', $this->url() . $url, [
-            'headers' => $this->headerData($requestTime),
-            'json' => $data
-        ]);
-        return $this->parseResult($requestTime, $response);
+        return $this->dataRequest('PUT', $url, $data);
     }
 
     public function delete($url, $data)
     {
-        $requestTime = Carbon::now()->setTimezone('UTC')->unix();
-        $response = $this->client->request('DELETE', $this->url() . $url, [
-            'headers' => $this->headerData($requestTime),
-            'json' => $data
-        ]);
-        return $this->parseResult($requestTime, $response);
+        return $this->dataRequest('DELETE', $url, $data);
     }
 
     protected function parseResult($requestTime, $response)
@@ -77,7 +71,13 @@ class Bridge
             ];
         }
         $body = json_decode($body);
-        $metadata = $body->metadata;
+        $metadata = null;
+        if (isset($body->metadata)) {
+            $metadata = $body->metadata;
+        }
+        if (isset($body->metaData)) {
+            $metadata = $body->metaData;
+        }
         if (!property_exists($body, 'response')) {
             return (object) [
                 'status' => $status,
@@ -118,7 +118,7 @@ class Bridge
             'x-signature' => $signature,
         ];
         if ($this->config->isPCare()) {
-            $data['x-authorization'] = $this->config->pCareAuth();
+            $data['x-authorization'] = 'Basic ' . $this->config->pCareAuth();
         }
         return $data;
     }
