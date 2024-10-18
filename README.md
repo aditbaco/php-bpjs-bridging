@@ -60,6 +60,32 @@ foreach ($reqPoli->body->list as $poli) {
 }
 ```
 
+### Event
+
+Setiap request dilakukan, bridging akan menjalankan event yang telah didaftarkan. Anda dapat mendaftarkan function untuk mencatat request yang pernah dilakukan. Event listener dapat didaftarkan saat membuat konfigurasi.
+
+```php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use BpjsBridging\Antrean\Bridging as AntreanRs;
+use BpjsBridging\EventBridging;
+use BpjsBridging\Config;
+
+function log(EventBridging $event) {
+    $file = 'log.txt';
+    $handle = fopen($file, 'a');
+    $data = $event->url + " pada " + $startAt;
+    fwrite($handle, $data);
+    fclose($handle);
+}
+
+$konfigurasi = new Config();
+$konfigurasi->addListener(log)
+$bridging = new AntreanRs($konfigurasi);
+```
+
 ## Kontribusi
 
 Your contribution is very welcome!
