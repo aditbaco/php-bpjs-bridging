@@ -30,9 +30,9 @@ class Config {
         return count($this->listeners) - 1;
     }
 
-    public function executeListeners(...$args) {
+    public function executeListeners($event) {
         foreach ($this->listeners as $listener) {
-            $listener(...$args);
+            $listener($event);
         }
     }
 
