@@ -26,15 +26,18 @@ class Bridge
         return rtrim($this->baseUrl(), "/");
     }
 
-    public function get($url)
-    {
+    private function dataRequest($type, $url, $data) {
         $startDateTime = Carbon::now();
         $startTime = microtime(true);
         $requestTime = Carbon::now()->setTimezone('UTC')->unix();
         $headers = $this->headerData($requestTime);
-        $response = $this->client->request('GET', $this->url() . $url, [
+        $requestObject = [
             'headers' => $headers,
-        ]);
+        ];
+        if ($data) {
+            $requestObject['json'] = $data;
+        }
+        $response = $this->client->request($type, $this->url() . $url, $requestObject);
         $result = $this->parseResult($requestTime, $response);
         $endDateTime = Carbon::now();
         $endTime = microtime(true);
@@ -53,31 +56,9 @@ class Bridge
         return $result;
     }
 
-    private function dataRequest($type, $url, $data) {
-        $startDateTime = Carbon::now();
-        $startTime = microtime(true);
-        $requestTime = Carbon::now()->setTimezone('UTC')->unix();
-        $headers = $this->headerData($requestTime);
-        $response = $this->client->request($type, $this->url() . $url, [
-            'headers' => $headers,
-            'json' => $data
-        ]);
-        $result = $this->parseResult($requestTime, $response);
-        $endDateTime = Carbon::now();
-        $endTime = microtime(true);
-        $this->config->executeListeners(
-            EventBridging::create(
-                'GET',
-                $this->url() . $url,
-                $headers,
-                null,
-                $result,
-                $endTime - $startTime,
-                $startDateTime,
-                $endDateTime
-            )
-        );
-        return $result;
+    public function get($url)
+    {
+        return $this->dataRequest('GET', $url, null);
     }
 
     public function post($url, $data)
