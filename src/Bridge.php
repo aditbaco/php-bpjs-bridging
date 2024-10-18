@@ -28,20 +28,56 @@ class Bridge
 
     public function get($url)
     {
+        $startDateTime = Carbon::now();
+        $startTime = microtime(true);
         $requestTime = Carbon::now()->setTimezone('UTC')->unix();
+        $headers = $this->headerData($requestTime);
         $response = $this->client->request('GET', $this->url() . $url, [
-            'headers' => $this->headerData($requestTime)
+            'headers' => $headers,
         ]);
-        return $this->parseResult($requestTime, $response);
+        $result = $this->parseResult($requestTime, $response);
+        $endDateTime = Carbon::now();
+        $endTime = microtime(true);
+        $this->config->executeListeners(
+            EventBridging::create(
+                'GET',
+                $this->url() . $url,
+                $headers,
+                null,
+                $result,
+                $endTime - $startTime,
+                $startDateTime,
+                $endDateTime
+            )
+        );
+        return $result;
     }
 
     private function dataRequest($type, $url, $data) {
+        $startDateTime = Carbon::now();
+        $startTime = microtime(true);
         $requestTime = Carbon::now()->setTimezone('UTC')->unix();
+        $headers = $this->headerData($requestTime);
         $response = $this->client->request($type, $this->url() . $url, [
-            'headers' => $this->headerData($requestTime),
+            'headers' => $headers,
             'json' => $data
         ]);
-        return $this->parseResult($requestTime, $response);
+        $result = $this->parseResult($requestTime, $response);
+        $endDateTime = Carbon::now();
+        $endTime = microtime(true);
+        $this->config->executeListeners(
+            EventBridging::create(
+                'GET',
+                $this->url() . $url,
+                $headers,
+                null,
+                $result,
+                $endTime - $startTime,
+                $startDateTime,
+                $endDateTime
+            )
+        );
+        return $result;
     }
 
     public function post($url, $data)

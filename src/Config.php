@@ -11,6 +11,7 @@ class Config {
     private $username;
     private $password;
     private $pcare = false;
+    private $listeners = [];
 
     public function __construct($url = null, $consumer_id = null, $consumer_secret = null, $user_key = null)
     {
@@ -18,6 +19,21 @@ class Config {
         $this->consumer_id = $consumer_id ?: env('BPJS_CONSUMER_ID');
         $this->consumer_secret = $consumer_secret ?: env('BPJS_CONSUMER_SECRET');
         $this->user_key = $user_key ?: env('BPJS_USER_KEY');
+    }
+
+    public function addListener($listeners) {
+        if (!is_callable($listeners)) {
+            throw new \Exception('Listener must be callable');
+        }
+        $this->listeners[] = $listeners;
+
+        return count($this->listeners) - 1;
+    }
+
+    public function executeListeners(...$args) {
+        foreach ($this->listeners as $listener) {
+            $listener(...$args);
+        }
     }
 
     public function getUrl()
