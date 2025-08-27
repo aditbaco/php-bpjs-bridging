@@ -188,7 +188,7 @@ class Bridging extends Bridge
      * @param KunjunganRequest $request Objek KunjunganRequest yang berisi data kunjungan.
      */
     public function tambahKunjungan(KunjunganRequest $request) {
-        return $this->post("/kunjungan", $request->toData());
+        return $this->post("/kunjungan/V1", $request->toData());
     }
 
     /**
@@ -197,7 +197,7 @@ class Bridging extends Bridge
      * @param KunjunganRequest $request Objek KunjunganRequest yang berisi data untuk diperbarui.
      */
     public function editKunjungan(KunjunganRequest $request) {
-        return $this->put("/kunjungan", $request->toData());
+        return $this->put("/kunjungan/V1", $request->toData());
     }
 
     /**
