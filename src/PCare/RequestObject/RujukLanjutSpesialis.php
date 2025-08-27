@@ -19,7 +19,7 @@ class RujukLanjutSpesialis extends RujukLanjut
         $data = parent::toData();
         $data['khusus'] = null;
         $data['subSpesialis'] = [
-            'kdSubSpesialis' => $this->kdSubSpesialis,
+            'kdSubSpesialis1' => $this->kdSubSpesialis,
             'kdSarana' => $this->kdSarana
         ];
         return $data;
